@@ -2,6 +2,7 @@
 
 - A new Flutter application that d.isplays the time from various timezones around the world.
 - Personally my first flutter app/
+- Added a new page that will eventually work as a timer
 
 ## Getting Started
 
