@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -11,6 +12,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    void onTimerPress() {
+      Navigator.pushNamed(context, '/timer');
+    }
+
 
     data = data.isNotEmpty ? data : ModalRoute.of(context).settings.arguments;
     print(data);
@@ -80,7 +86,30 @@ class _HomeState extends State<Home> {
           ],
         ),
               ),
-            )),
+            ),),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text('Timer',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: txtColor
+          ),),
+          SizedBox(height: 5,),
+          FloatingActionButton(
+            tooltip: 'Timer' ,
+            splashColor: Colors.black,
+            backgroundColor: txtColor,
+              child: Icon(Icons.timer,
+              color: bgColor),
+
+              onPressed: (){
+              onTimerPress();
+
+              }),
+        ],
+      ),
     );
   }
 }
+

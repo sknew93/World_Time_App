@@ -36,10 +36,27 @@ class _LoadingState extends State<Loading> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
-        child: SpinKitRing(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('World Time App',
+              style: TextStyle(
+                fontSize: 75,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 2
+                  ..color = Colors.blue[700],
+              ),),
+            ),
+            SizedBox(height: 10.0,),
+            SpinKitFadingGrid(
 
-          color: Colors.white,
-          size: 50.0,
+              color: Colors.white,
+              size: 50.0,
+            ),
+          ],
         ),
 
       )
