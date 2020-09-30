@@ -10,8 +10,8 @@ class TimerClass extends StatefulWidget {
 }
 
 class _TimerClassState extends State<TimerClass> with TickerProviderStateMixin{
-  TabController tb;
 
+  TabController tb;
 
   @override
   void initState() {
@@ -133,6 +133,7 @@ class _TimerClassState extends State<TimerClass> with TickerProviderStateMixin{
               thickness: 2,
               height: 25,
             ),
+            ((timeInSec < 1) == true) ? Text('Times Up!') : Text('Counter'),
             Text('$timeToDisplay',
               style: TextStyle(color: Colors.grey),),
             Padding(
@@ -161,12 +162,15 @@ class _TimerClassState extends State<TimerClass> with TickerProviderStateMixin{
                 icon: Icon(Icons.refresh),
                 label: Text('Reset Timer'),),
             ),
-            // LinearProgressIndicator(
-            //   value: value,
-            //   valueColor: AlwaysStoppedAnimation(Colors.green),
-            // ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
+              child: LinearProgressIndicator(
+                value: (linearScaleValue),
+                backgroundColor: Colors.green,
+                valueColor: AlwaysStoppedAnimation(Colors.red),
+              ),
+            ),
           ],
-
         ),
       ),
     );
@@ -178,9 +182,13 @@ class _TimerClassState extends State<TimerClass> with TickerProviderStateMixin{
   bool started = true;
   bool stopped = true;
   int timeInSec = 0;
+  int orgTimeInSec;
+  double linearScaleValue = 1.0;
   dynamic myControllerHH = TextEditingController();
   dynamic myControllerMM = TextEditingController();
   dynamic myControllerSS = TextEditingController();
+  int myHH;
+  int myMM;
   int mySS;
 
 
@@ -202,19 +210,25 @@ class _TimerClassState extends State<TimerClass> with TickerProviderStateMixin{
       stopped = false;
     });
 
-    int myHH = int.parse(myControllerHH.text);
-    int myMM = int.parse(myControllerMM.text);
-    int mySS = int.parse(myControllerSS.text);
+
+    int myHH = ((myControllerHH.text==null) ? 0 : (int.parse(myControllerHH.text)));
+    int myMM = ((myControllerMM.text==null) ? 0 : (int.parse(myControllerMM.text)));
+    int mySS = ((myControllerSS.text==null) ? 0 : (int.parse(myControllerSS.text)));
 
     timeInSec = ((myHH*60*60)+(myMM*60)+mySS);
-    Timer.periodic(Duration(seconds: timeInSec), (Timer t) {
+    final orgTimeInSec = timeInSec;
+
+    Timer.periodic(Duration(seconds: 1), (Timer t) {
       setState(() {
         if (timeInSec < 1) {
+          timeToDisplay = 'Done';
           t.cancel();
         } else {
           timeInSec = timeInSec-1;
         }
+        timeToDisplay = timeInSec.toString();
         myControllerSS.text = timeInSec.toString();
+        linearScaleValue = timeInSec/orgTimeInSec;
       });
     });
   }
@@ -223,6 +237,7 @@ class _TimerClassState extends State<TimerClass> with TickerProviderStateMixin{
     setState(() {
       started = true;
       stopped = false;
+      linearScaleValue = 1.0;
       myControllerHH.clear();
       myControllerMM.clear();
       myControllerSS.clear();
